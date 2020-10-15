@@ -30,11 +30,11 @@ public class NewsListFragment extends Fragment {
     }
 
     //Todo: uncomment in case of using arguments (search for word/number occurrence)
-    public static NewsListFragment getInstance() {
+    public static NewsListFragment getInstance(final String searchString) {
         NewsListFragment fragment = new NewsListFragment();
-//        Bundle arguments = new Bundle();
-//        arguments.putInt(SongUtils.SONG_ID_KEY, selectedSong);
-//        fragment.setArguments(arguments);
+        Bundle arguments = new Bundle();
+        arguments.putString(SearchFragment.SEARCH_STRING, searchString);
+        fragment.setArguments(arguments);
         return fragment;
     }
 

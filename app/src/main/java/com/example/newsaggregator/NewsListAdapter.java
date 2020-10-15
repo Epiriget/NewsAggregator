@@ -39,10 +39,9 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
     }
 
     private void startFragment(final int newsItemId) {
-        NewsItemFragment fragment = NewsItemFragment.getInstance(newsItemId);
         if(mContext instanceof MainActivity) {
             MainActivity activity = (MainActivity) mContext;
-            activity.startNewsItemFragment(fragment);
+            activity.startNewsItemFragment(newsItemId);
         }
     }
 

@@ -19,18 +19,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startNewsListFragment();
+        startSearchFragment();
     }
 
-    public void startNewsItemFragment(NewsItemFragment newsItemFragment) {
+    private void startSearchFragment() {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.news_list_container, newsItemFragment)
+                .replace(R.id.news_list_container, SearchFragment.getInstance())
                 .addToBackStack(null)
                 .commit();
     }
 
-    private void startNewsListFragment() {
-        NewsListFragment newsListFragment = NewsListFragment.getInstance();
+    public void startNewsItemFragment(final int newsItemId) {
+        NewsItemFragment fragment = NewsItemFragment.getInstance(newsItemId);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.news_list_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void startNewsListFragment(String searchString) {
+        NewsListFragment newsListFragment = NewsListFragment.getInstance(searchString);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.news_list_container, newsListFragment)
                 .addToBackStack(null)
