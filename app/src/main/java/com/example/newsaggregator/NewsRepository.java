@@ -3,10 +3,19 @@ package com.example.newsaggregator;
 import android.app.Application;
 import android.media.ImageReader;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class NewsRepository {
     private NewsDao mNewsDao;
@@ -34,6 +43,21 @@ public class NewsRepository {
     public LiveData<NewsItem> loadNewsItem(final int id) {
         return mNewsDao.loadNewsItem(id);
     }
+
+    public void updateAll(final String searchString) {
+        final Completable serverDownloadCompletable =
+                Completable.create(emitter -> {
+                    NewsDownloadAsyncTask downloadTask = new NewsDownloadAsyncTask();
+                    downloadTask.getNewsList(searchString).forEach(mNewsDao::insert);
+                    emitter.onComplete();
+                });
+
+        Disposable subscribe = serverDownloadCompletable
+                .subscribeOn(Schedulers.newThread())
+                .subscribe();
+    }
+
+    private void fetchNewsByStringCompletable(){}
 
 
     private static class deleteAllNewsAsyncTask extends AsyncTask<Void, Void, Void> {

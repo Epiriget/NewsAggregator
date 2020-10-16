@@ -8,4 +8,5 @@
     <string name="search_label">Find all articles containing the word or phrase:</string>
     <string name="search_edit_text_hint">Enter word or phrase</string>
     <string name="search_button_text">Search</string>
+    <string name="no_data_found">No articles were found by this search query. \nPlease try another one.</string>
 </resources>

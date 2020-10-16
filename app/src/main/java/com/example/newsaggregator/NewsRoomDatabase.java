@@ -38,7 +38,7 @@ public abstract class NewsRoomDatabase extends RoomDatabase {
                 @Override
                 public void onOpen(@NonNull SupportSQLiteDatabase db) {
                     super.onOpen(db);
-                    new PopulateDbAsync(INSTANCE).execute();
+//                    new PopulateDbAsync(INSTANCE).execute();
                 }
             };
 
@@ -53,9 +53,7 @@ public abstract class NewsRoomDatabase extends RoomDatabase {
         protected Void doInBackground(Void... voids) {
             if(mDao.getAnyNewsItem().length < 1) {
                 NewsDownloadAsyncTask task = new NewsDownloadAsyncTask();
-                List<NewsItem> items = task.getNewsList();
-//                List<NewsItem> items = new ArrayList<>();
-//                items.add(new NewsItem("Title", "Description", "someurl", "time", "content"));
+                List<NewsItem> items = task.getNewsList("trump");
                 for (NewsItem item:items) {
                     mDao.insert(item);
                 }

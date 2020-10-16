@@ -1,6 +1,8 @@
 package com.example.newsaggregator;
 
 import android.os.AsyncTask;
+import android.os.SystemClock;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,8 +20,11 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class NewsDownloadAsyncTask {
 
-    protected List<NewsItem> getNewsList() {
-        String query = "https://newsapi.org/v2/top-headlines?q=trump&language=en&apiKey=0c681df656cb4216a48f9abf3c8dc6c2";
+    List<NewsItem> getNewsList(final String searchString) {
+        String query = "https://newsapi.org/v2/top-headlines?q="
+                .concat(searchString)
+                .concat("&language=en&apiKey=0c681df656cb4216a48f9abf3c8dc6c2");
+        Log.d("NewsDownloadAsyncTask query:", query);
         String stringResult = getJsonFromQuery(query);
         List<NewsItem> newsList = new ArrayList<>();
 

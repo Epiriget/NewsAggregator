@@ -30,6 +30,10 @@ public class NewsViewModel extends AndroidViewModel {
         return mRepository.loadNewsItem(id);
     }
 
+    public void updateAll(final String searchString) {
+        mRepository.updateAll(searchString);
+    }
+
     public void deleteNewsItem(NewsItem item) {
         mRepository.deleteNewsItem(item);
     }

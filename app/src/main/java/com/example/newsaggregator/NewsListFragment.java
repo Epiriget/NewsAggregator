@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -29,7 +30,6 @@ public class NewsListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    //Todo: uncomment in case of using arguments (search for word/number occurrence)
     public static NewsListFragment getInstance(final String searchString) {
         NewsListFragment fragment = new NewsListFragment();
         Bundle arguments = new Bundle();
@@ -44,8 +44,8 @@ public class NewsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news_list, container, false);
 
-        RecyclerView recyclerView = rootView.findViewById(R.id.recycleView);
         final NewsListAdapter adapter = new NewsListAdapter();
+        RecyclerView recyclerView = rootView.findViewById(R.id.recycleView);
         recyclerView.setAdapter(adapter);
         DividerItemDecoration divider = new DividerItemDecoration
                 (rootView.getContext(), DividerItemDecoration.VERTICAL);
@@ -55,7 +55,12 @@ public class NewsListFragment extends Fragment {
         mNewsViewModel = ViewModelProviders.of(this)
                 .get(NewsViewModel.class);
 
-        mNewsViewModel.getAllNews().observe(getActivity(), list -> adapter.setNews(list));
+        mNewsViewModel.getAllNews().observe(getActivity(),
+                list -> {
+                    if (list.size() > 0) {
+                        adapter.setNews(list);
+                    }
+                });
         return rootView;
     }
 }

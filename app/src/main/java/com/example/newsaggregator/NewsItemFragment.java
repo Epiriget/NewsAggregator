@@ -15,6 +15,7 @@ import android.text.SpannedString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class NewsItemFragment extends Fragment {
     private TextView mNewsItemTitle;
     private TextView mNewsItemText;
     private TextView mNewsItemSrc;
+    private int newsItemId;
     public NewsItemFragment() {
         // Required empty public constructor
     }
@@ -49,34 +51,40 @@ public class NewsItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_item, container, false);
+        Log.d("NewsItemFragment", "OnCreateView " + (getActivity() == null));
         mNewsItemDate = view.findViewById(R.id.newsItemDate);
         mNewsItemSrc = view.findViewById(R.id.newsItemSrc);
         mNewsItemText = view.findViewById(R.id.newsItemText);
         mNewsItemTitle = view.findViewById(R.id.newsItemTitle);
 
         Bundle arguments = getArguments();
-        int newsItemId = 0;
+        newsItemId = 0;
         if(arguments != null) {
             newsItemId = arguments.getInt(PRODUCT_ID_KEY, 0);
         }
         mNewsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-        mNewsViewModel.loadNewsItem(newsItemId).observe(getActivity(), item -> {
-            updateViewContent(item);
-        });
-
+        mNewsViewModel.loadNewsItem(newsItemId).observe(getActivity(), this::updateViewContent);
         return view;
     }
 
     private void updateViewContent(NewsItem item) {
-        mNewsItemTitle.setText(item.getTitle());
-        mNewsItemText.setText(item.getContent());
-        mNewsItemDate.setText(item.getTime());
+        if(item != null) {
+            mNewsItemTitle.setText(item.getTitle());
+            mNewsItemText.setText(item.getContent());
+            mNewsItemDate.setText(item.getTime());
 
-        String linkString = getString(R.string.link_src_label);
-        SpannableString string = new SpannableString(linkString);
-        string.setSpan(new URLSpan(item.getUrl()), linkString.indexOf("source"),
-                linkString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mNewsItemSrc.setText(string);
-        mNewsItemSrc.setMovementMethod(LinkMovementMethod.getInstance());
+            String linkString = getString(R.string.link_src_label);
+            SpannableString string = new SpannableString(linkString);
+            string.setSpan(new URLSpan(item.getUrl()), linkString.indexOf("source"),
+                    linkString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mNewsItemSrc.setText(string);
+            mNewsItemSrc.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("NewsItemFragment", "OnStop");
     }
 }

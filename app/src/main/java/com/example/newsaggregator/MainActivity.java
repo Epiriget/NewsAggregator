@@ -18,14 +18,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mNewsViewModel = ViewModelProviders.of(this)
+                .get(NewsViewModel.class);
         startSearchFragment();
     }
 
     private void startSearchFragment() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.news_list_container, SearchFragment.getInstance())
-                .addToBackStack(null)
                 .commit();
     }
 
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startNewsListFragment(String searchString) {
+        mNewsViewModel.updateAll(searchString);
         NewsListFragment newsListFragment = NewsListFragment.getInstance(searchString);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.news_list_container, newsListFragment)
