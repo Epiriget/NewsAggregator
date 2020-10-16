@@ -45,6 +45,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
         }
     }
 
+    public NewsItem getNewsItemAtPosition(int position) {
+        return mNews.get(position);
+    }
+
     @Override
     public int getItemCount() {
         return (mNews != null)? mNews.size(): 0;

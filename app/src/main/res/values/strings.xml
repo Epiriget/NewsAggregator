@@ -9,4 +9,7 @@
     <string name="search_edit_text_hint">Enter word or phrase</string>
     <string name="search_button_text">Search</string>
     <string name="no_data_found">No articles were found by this search query. \nPlease try another one.</string>
+    <string name="search_bottom_nav_label">Search</string>
+    <string name="list_bottom_nav_label">News</string>
+    <string name="favourites_bottom_nav_label">Favourites</string>
 </resources>
