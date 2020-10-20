@@ -32,12 +32,8 @@ public class NewsListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static NewsListFragment getInstance(final String searchString) {
-        NewsListFragment fragment = new NewsListFragment();
-        Bundle arguments = new Bundle();
-        arguments.putString(SearchFragment.SEARCH_STRING, searchString);
-        fragment.setArguments(arguments);
-        return fragment;
+    public static NewsListFragment getInstance() {
+        return new NewsListFragment();
     }
 
 

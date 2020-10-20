@@ -1,5 +1,6 @@
 package com.example.newsaggregator;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -21,9 +22,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         mNewsViewModel = ViewModelProviders.of(this)
                 .get(NewsViewModel.class);
+
+        BottomNavigationView bottomView = findViewById(R.id.bottomNavigation);
+        bottomView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_search_page:
+                    startSearchFragment();
+                    return true;
+                case R.id.menu_list_page:
+                    startNewsListFragment();
+                    return true;
+                case R.id.menu_favourites_page:
+                    startNewsListFragment();
+                    return true;
+                default:
+                    return false;
+            }
+        });
         startSearchFragment();
     }
 
@@ -41,9 +58,8 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public void startNewsListFragment(String searchString) {
-        mNewsViewModel.updateAll(searchString);
-        NewsListFragment newsListFragment = NewsListFragment.getInstance(searchString);
+    public void startNewsListFragment() {
+        NewsListFragment newsListFragment = NewsListFragment.getInstance();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.news_list_container, newsListFragment)
                 .addToBackStack(null)

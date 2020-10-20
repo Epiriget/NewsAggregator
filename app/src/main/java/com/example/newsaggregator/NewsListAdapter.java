@@ -1,20 +1,19 @@
 package com.example.newsaggregator;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsViewHolder> {
-    List<NewsItem> mNews;
+    private List<NewsItem> mNews;
     private Context mContext;
     @NonNull
     @Override
@@ -22,8 +21,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
         mContext = parent.getContext();
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.recycleview_item, parent, false);
-        final NewsViewHolder viewHolder = new NewsViewHolder(view);
-        return viewHolder;
+        return new NewsViewHolder(view);
     }
 
     @Override
@@ -35,6 +33,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
         holder.itemView.setOnClickListener(v -> {
             NewsItem item = mNews.get(position);
             startFragment(item.getId());
+        });
+
+        CheckBox checkBox = holder.itemView.findViewById(R.id.favouriteCheckBox);
+        checkBox.setOnClickListener(v -> {
+            NewsItem item = mNews.get(position);
+            item.setFavourite(checkBox.isChecked());
+            mNews.set(position, item);
+            setNews(mNews);
         });
     }
 
@@ -62,13 +68,21 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
     static class NewsViewHolder extends RecyclerView.ViewHolder {
         private TextView newsTitleTextView;
         private TextView newsContentTextView;
+        private CheckBox newsIsFavouriteCheckBox;
         private NewsViewHolder(@NonNull View itemView) {
             super(itemView);
             newsTitleTextView = itemView.findViewById(R.id.itemHeader);
             newsContentTextView = itemView.findViewById(R.id.itemContent);
+            newsIsFavouriteCheckBox = itemView.findViewById(R.id.favouriteCheckBox);
         }
 
         void bind(NewsItem item) {
+            if(newsIsFavouriteCheckBox.isChecked()) {
+                newsIsFavouriteCheckBox.setButtonDrawable(R.drawable.ic_favourite_active);
+            }
+            else {
+                newsIsFavouriteCheckBox.setButtonDrawable(R.drawable.ic_favourite_inactive);
+            }
             newsTitleTextView.setText(item.getTitle());
             newsContentTextView.setText(item.getContent());
         }

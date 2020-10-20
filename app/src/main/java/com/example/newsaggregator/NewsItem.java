@@ -32,13 +32,19 @@ public class NewsItem {
     @ColumnInfo(name = "content")
     private String mContent;
 
+    @NotNull
+    @ColumnInfo(name = "is_favourite")
+    private Boolean mFavourite;
+
     public NewsItem(@NotNull String mTitle, @NotNull String mDescription,
-                    @NotNull String mUrl, @NotNull String mTime, @NotNull String mContent) {
+                    @NotNull String mUrl, @NotNull String mTime,
+                    @NotNull String mContent) {
         this.mTitle = mTitle;
         this.mDescription = mDescription;
         this.mUrl = mUrl;
         this.mTime = mTime;
         this.mContent = mContent;
+        this.mFavourite = false;
     }
 
     public int getId() {
@@ -68,4 +74,13 @@ public class NewsItem {
     public void setId(int id) {
         this.id = id;
     }
+
+    public Boolean getFavourite() {
+        return mFavourite;
+    }
+
+    public void setFavourite(Boolean isFavourite) {
+        mFavourite = isFavourite;
+    }
+
 }
